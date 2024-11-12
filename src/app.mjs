@@ -17,7 +17,7 @@ app.use(cookieParser())
 // ROOT ROUTE
 app.get("/", (req, res) => {
     res.send({
-        message: "Welcome To HIDDEVBLOG REST API!"
+        message: "Welcome To HIDDEVBLOG REST API!!!"
     });
 });
 
