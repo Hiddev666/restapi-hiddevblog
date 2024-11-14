@@ -101,6 +101,14 @@ router.get("/api/posts/:slug", async (req, res) => {
                 $unwind: "$category"
             },
             {
+                $lookup: {
+                    from: "users",
+                    localField: "author",
+                    foreignField: "_id",
+                    as: "author"
+                }
+            },
+            {
                 $project: {
                     category: {
                         createdAt: 0,
@@ -115,14 +123,6 @@ router.get("/api/posts/:slug", async (req, res) => {
                         __v: 0
                     },
                     __v: 0
-                }
-            },
-            {
-                $lookup: {
-                    from: "users",
-                    localField: "author",
-                    foreignField: "_id",
-                    as: "author"
                 }
             },
             {
@@ -145,11 +145,75 @@ router.get("/api/posts/:slug", async (req, res) => {
     }
 });
 
+router.get("/api/posts/user/:username", async (req, res) => {
+    const { params: { username } } = req;
+
+    try {
+        const posts = await Post.aggregate([
+            {
+                $lookup: {
+                    from: "categories",
+                    localField: "category",
+                    foreignField: "_id",
+                    as: "category"
+                }
+            },
+            {
+                $unwind: "$category"
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "author",
+                    foreignField: "_id",
+                    as: "author"
+                }
+            },
+            {
+                $project: {
+                    category: {
+                        createdAt: 0,
+                        updatedAt: 0,
+                        __v: 0
+                    },
+                    author: {
+                        _id: 0,
+                        createdAt: 0,
+                        updatedAt: 0,
+                        email: 0,
+                        password: 0,
+                        __v: 0
+                    },
+                    __v: 0
+                }
+            },
+            {
+                $unwind: "$author"
+            },
+            {
+                $match: {
+                    author: {
+                        username: username
+                    }
+                }
+            }
+        ])
+        res.send({
+            message: "Get A Post Successfully",
+            data: posts
+        })
+    } catch (err) {
+        res.send({
+            message: err.message
+        })
+    }
+});
+
 router.patch("/api/posts/:slug", verifyJwt, async (req, res) => {
     const { body, params: { slug } } = req
 
     try {
-        const post = await Post.findOneAndUpdate({slug: slug}, body)
+        const post = await Post.findOneAndUpdate({ slug: slug }, body)
         res.send({
             message: "A Post Updated",
             data: post
@@ -159,13 +223,13 @@ router.patch("/api/posts/:slug", verifyJwt, async (req, res) => {
             message: err.message
         });
     }
-}); 
+});
 
 router.delete("/api/posts/:slug", verifyJwt, async (req, res) => {
     const { params: { slug } } = req;
 
     try {
-        const post = await Post.findOneAndDelete({slug: slug});
+        const post = await Post.findOneAndDelete({ slug: slug });
         res.send({
             message: `Delete A post successfully`
         })
