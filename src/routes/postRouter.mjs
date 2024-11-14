@@ -1,5 +1,5 @@
 import { Router } from "express";
-import dotenv from "dotenv";
+import dotenv, { parse } from "dotenv";
 import jwt from "jsonwebtoken";
 import { verifyJwt } from "../middlewares/verifyJwt.mjs";
 import Post from "../database/models/postModel.mjs";
@@ -31,7 +31,13 @@ router.post("/api/posts/", verifyJwt, async (req, res) => {
 });
 
 router.get("/api/posts/", async (req, res) => {
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 10
+
     try {
+        const startIndex = (page - 1) * limit
+        const total = await Post.countDocuments()
+
         const posts = await Post.aggregate([
             {
                 $lookup: {
@@ -71,10 +77,16 @@ router.get("/api/posts/", async (req, res) => {
                     },
                     __v: 0
                 }
-            }
-        ])
+            },
+        ]).skip(startIndex).limit(limit)
         res.send({
             message: "Get Posts Successfully",
+            pagination: {
+                page: page,
+                limit: limit,
+                totalItems: total,
+                pages: Math.ceil(total / limit)
+            },
             data: posts
         })
     } catch (err) {
@@ -147,8 +159,46 @@ router.get("/api/posts/:slug", async (req, res) => {
 
 router.get("/api/posts/user/:username", async (req, res) => {
     const { params: { username } } = req;
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 10
 
     try {
+        const startIndex = (page - 1) * limit
+        const postsTotal = await Post.aggregate([
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "author",
+                    foreignField: "_id",
+                    as: "author"
+                }
+            },
+            {
+                $project: {
+                    author: {
+                        _id: 0,
+                        createdAt: 0,
+                        updatedAt: 0,
+                        email: 0,
+                        password: 0,
+                        __v: 0
+                    },
+                    __v: 0
+                }
+            },
+            {
+                $unwind: "$author"
+            },
+            {
+                $match: {
+                    author: {
+                        username: username
+                    }
+                }
+            }
+        ])
+        const total = postsTotal.length
+
         const posts = await Post.aggregate([
             {
                 $lookup: {
@@ -197,9 +247,17 @@ router.get("/api/posts/user/:username", async (req, res) => {
                     }
                 }
             }
-        ])
+        ]).skip(startIndex).limit(limit)
+
+
         res.send({
-            message: "Get A Post Successfully",
+            message: "Get Posts Successfully",
+            pagination: {
+                page: page,
+                limit: limit,
+                totalItems: total,
+                pages: Math.ceil(total / limit)
+            },
             data: posts
         })
     } catch (err) {
