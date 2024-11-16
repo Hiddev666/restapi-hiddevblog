@@ -13,6 +13,7 @@ app.use(express.json())
 app.use(router);
 app.use(cors());
 app.use(cookieParser())
+app.use(express.static('public'));
 
 // ROOT ROUTE
 app.get("/", (req, res) => {
