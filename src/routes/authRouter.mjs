@@ -24,7 +24,7 @@ const upload = multer({ storage: storage });
 const gdFolderId = "1GFdLKJdxfaCCiBJTmwp-56Q9Bn2I26W6"
 
 const auth = new google.auth.GoogleAuth({
-    keyFile: "./public/gdapi_key.json",
+    keyFile: "./src/database/gdapi_key.json",
     scopes: ["https://www.googleapis.com/auth/drive"]
 })
 
