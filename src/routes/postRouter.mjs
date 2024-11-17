@@ -78,6 +78,11 @@ router.get("/api/posts/", async (req, res) => {
                     __v: 0
                 }
             },
+            {
+                $sort: {
+                    createdAt: -1
+                }
+            }
         ]).skip(startIndex).limit(limit)
         res.send({
             message: "Get Posts Successfully",
@@ -245,6 +250,11 @@ router.get("/api/posts/user/:username", async (req, res) => {
                     author: {
                         username: username
                     }
+                }
+            },
+            {
+                $sort: {
+                    createdAt: -1
                 }
             }
         ]).skip(startIndex).limit(limit)

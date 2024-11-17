@@ -17,51 +17,21 @@ dotenv.config();
 const router = Router();
 router.use(cors())
 
-const storage = multer.diskStorage({ destination: os.tmpdir(), filename: (req, file, callback) => callback(null, `${file.originalname}`) });
-
-const upload = multer({ storage: storage });
-
-const gdFolderId = "1GFdLKJdxfaCCiBJTmwp-56Q9Bn2I26W6"
-
-const auth = new google.auth.GoogleAuth({
-    keyFile: "./src/database/gdapi_key.json",
-    scopes: ["https://www.googleapis.com/auth/drive"]
-})
-
 // Register
-router.post("/api/auth/register", upload.single("avatar"), async (req, res) => {
-    const { body, file } = req;
+router.post("/api/auth/register", async (req, res) => {
+    const { body } = req;
 
     const encryptedPassword = CryptoJS.AES.encrypt(
         body.password,
         process.env.CRYPTO_KEY
     );
     body.password = encryptedPassword;
-    // const avatarName = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
-    // body.avatar = avatarName
 
     try {
-        const avatar = req.file
-        const avatarName = req.file.filename
-        // const newUser = await new User(body).save();
-
-        const { data } = await google.drive({version: "v3", auth: auth}).files
-        .create({
-            media: {
-                mimeType: file.mimetype,
-                body: fs.createReadStream(file.path)
-            },
-            requestBody: {
-                name: file.originalname,
-                parents: [gdFolderId]
-            },
-            fields: "id,name"
-        })
-
-        console.log(JSON.stringify(data))
-
+        const newUser = await new User(body).save();
         res.send({
             message: "New User was created",
+            data: newUser
         })
     } catch (err) {
         res.send({
