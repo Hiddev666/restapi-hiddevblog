@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "hiddevblog",
+  "private_key_id": "fe279f81692268edce7521b816c9925c13a9c392",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC9bbkdGT826FDx\nwsbnyhlollJ7ds4+eB9P43zqpgnBwDlKLLkAH3+BePYL5t6ntOo0YuMrCZweYcbP\nsngG2PowPtPfb2BVdnWehNileUgFXOqZ4GhQ0CzDdjlrKE9iZU8VXxLcWH00sgfL\n3o9Cwm9w1hMMQ6EnM84I7yhMve/SM4cV+U1CAMk1x0XPkf+3hTaqQNBVOKdaMoGk\nVIShA4War9CfGjRDKM/1SHuYc39topVjQzYj0ZbG0TN1gw6hwghbYZQ4P4zDVqMA\npsQuaYqYj+N0U+/fe9Wdqs6nuyzD/F9/YFM/4xEXA0b5rWO2J6yD99PxrBmcDf4Z\nfZMYcgvBAgMBAAECggEAHtdjvYVcCbZK4YXfKSN6PhFFdiUagMjBfloRP0oPyhwg\nJ7++0jKOqbeWRctNwpvdyvAzwNDUeozcV/oceS7wExVTnSwO0PNTxJ6oAE8OBxOA\n/dMv4MJ4G03fHN+IB0Lr3JSpZzdAEWmQA+UlSY8LImG0YbmMHiwc1k8L7my5RG2H\nVIZtmyZ1cskBkrAOmwgvUdnu+BcabZv9w/D1RO+75GuDEKQXZLFy4rnSFexOXRY0\nFGbgfHy8JUFkRRFnGYade116vn4TXXE7JDFjqnYSz52LjmxrbZ5RDhDCQJlYudcp\nC7jY0lYZsW/2qRmWj+kNl43PUj0PsTpDKv41xPSgTQKBgQD+P/+loM840UieRsy8\nz57l3VPY7mljeeephAm9/a9KAUdkc7lbfbaYLLzpJn2ZRU11dRNlIMaBm95n+NLH\ndev+cngWzBh3AAN0TqYB9L8+VBOAm9ZODlY29u1kC+kgDWAD/dfN1yd+tGKHYkN0\nYjHMkADb2V5iZgPoxTy6PNKFHQKBgQC+u4GDE3i+6b9ACMzoYdNjuSf9qz6x/PDP\nvhmHBRia3hfXCCkPBbA5In32DcjoQ/IU/lo2gEUZFzbSyyf1MUbwR+i5vrB0S/sQ\nYiIQGcYxqv0oos8yPdYpBxWB2SjWtX90tNMa4vGKfbL2QW0962s2nYSjdlMmyOCM\nviy2KV2T9QKBgQDf2a8Wv5fTGYhLOmCmWFI5Zf2dwILvf3Q07ri5GzMLAEdALRdk\nczGhl7oXuLjaiobhRFv4LLw5fud5OT0zOiK2m0gaIkXj+BISg/BrRnZexR2KnSo4\n/SxxJkTqUgZGHyCLQyKO68CtMNqTAjQLsyzPQ3ZOGnqcPd9xQL7v5f8gDQKBgCVW\nFTMwc5mDrlF9p4bx52yFCUQJ6pry9bzk7KBWqgte4HHSgh8TsPxuORQafLKi4lej\ntssmbuBLgArhg+/mdomAuhjqMCaD3SDG5P4b3YVJgIcc38xo+GxNm7MwbGMjYlDZ\nON3xgPDoTEkSY60UUYd+bEGHXx2fgv1qGNyL2mqlAoGBALqfNN7af7m6dOxh7zbA\npPZoutUxNoQ+c7bxMYeBIR2yAlZCN7tlR7nmhKQjlGUsUlWN6IdAC8Q7nYmblfOu\nx0Ot3QC1gHL1bC5UQ7Pqs2tdKJqNrSCsqZN+DQy6y4wGxA2Ux8V+Vzuzjuum0EHJ\nU2w00gZHVPNrwGrycAbm7Vaj\n-----END PRIVATE KEY-----\n",
+  "client_email": "googledriveapi@hiddevblog.iam.gserviceaccount.com",
+  "client_id": "112569912274798492133",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/googledriveapi%40hiddevblog.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

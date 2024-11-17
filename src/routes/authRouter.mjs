@@ -8,40 +8,60 @@ import jwt from "jsonwebtoken";
 import multer from "multer";
 import { randomUUID } from "crypto";
 import { verifyJwt } from "../middlewares/verifyJwt.mjs";
+import { google } from "googleapis";
+import { fstat } from "fs";
+import fs from "fs";
+import os from "os"
 
 dotenv.config();
 const router = Router();
 router.use(cors())
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'public/uploads/')
-    },
-    filename: function (req, file, cb) {
-        const rand = randomUUID()
-        cb(null, rand + file.originalname)
-    }
-})
+const storage = multer.diskStorage({ destination: os.tmpdir(), filename: (req, file, callback) => callback(null, `${file.originalname}`) });
 
-const upload = multer({ storage: storage })
+const upload = multer({ storage: storage });
+
+const gdFolderId = "1GFdLKJdxfaCCiBJTmwp-56Q9Bn2I26W6"
+
+const auth = new google.auth.GoogleAuth({
+    keyFile: "./public/gdapi_key.json",
+    scopes: ["https://www.googleapis.com/auth/drive"]
+})
 
 // Register
 router.post("/api/auth/register", upload.single("avatar"), async (req, res) => {
-    const { body } = req;
+    const { body, file } = req;
 
     const encryptedPassword = CryptoJS.AES.encrypt(
         body.password,
         process.env.CRYPTO_KEY
     );
     body.password = encryptedPassword;
-    const avatarName = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
-    body.avatar = avatarName
+    // const avatarName = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
+    // body.avatar = avatarName
 
     try {
-        const newUser = await new User(body).save();
+        const avatar = req.file
+        const avatarName = req.file.filename
+        // const newUser = await new User(body).save();
+
+        const { data } = await google.drive({version: "v3", auth: auth}).files
+        .create({
+            media: {
+                mimeType: file.mimetype,
+                body: fs.createReadStream(file.path)
+            },
+            requestBody: {
+                name: file.originalname,
+                parents: [gdFolderId]
+            },
+            fields: "id,name"
+        })
+
+        console.log(JSON.stringify(data))
+
         res.send({
             message: "New User was created",
-            data: newUser
         })
     } catch (err) {
         res.send({
