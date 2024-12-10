@@ -254,7 +254,7 @@ router.get("/api/posts/user/:username", async (req, res) => {
             },
             {
                 $sort: {
-                    createdAt: -1
+                    updatedAt: -1
                 }
             }
         ]).skip(startIndex).limit(limit)
